@@ -2,7 +2,7 @@
 本项目为tedu websocket demo项目
 
 
-
+## 操作步骤
 1. 客户端与服务端建立websocket链接
 ```
 访问在线工具： http://www.easyswoole.com/wstool.html
@@ -16,6 +16,30 @@
 get请求：http://localhost:8888/demo/send?msg=发送客户端的消息
 ```
 
+
+## 项目结构如下
+```
+.
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── example
+    │   │           └── websocketdemo
+    │   │               ├── config
+    │   │               ├── controller
+    │   │               ├── entity
+    │   │               └── server
+    │   └── resources
+    │       ├── static
+    │       └── templates
+    └── test
+        └── java
+            └── com
+                └── example
+                    └── websocketdemo
+
+```
 
 
 
