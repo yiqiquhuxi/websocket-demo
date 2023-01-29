@@ -18,7 +18,7 @@ public class ConsumerA {
 
   @RabbitHandler
   public void getMsg(String message) {
-    System.out.println("1 接收到的数据" + message);
+    System.out.println("A 接收到的数据" + message);
     SocketServer.sendAll(message);
   }
 

@@ -31,12 +31,6 @@ public class SocketServer {
    */
   private static CopyOnWriteArraySet<Client> socketServers = new CopyOnWriteArraySet<>();
 
-  /**
-   *
-   * websocket封装的session,信息推送，就是通过它来信息推送
-   */
-  private volatile Session session;
-
 
   /**
    *
@@ -48,7 +42,6 @@ public class SocketServer {
    */
   @OnOpen
   public void open(Session session,@PathParam(value="userName")String userName){
-    this.session = session;
     socketServers.add(new Client(userName,session));
     log.info("客户端:【{}】连接成功",userName);
 
@@ -61,7 +54,7 @@ public class SocketServer {
    * socketServers中客户端连接信息
    */
   @OnClose
-  public void onClose(){
+  public void onClose(Session session){
     socketServers.forEach(client ->{
       if (client.getSession().getId().equals(session.getId())) {
         log.info("客户端:【{}】断开连接",client.getUserName());
@@ -77,7 +70,7 @@ public class SocketServer {
    * @param error
    */
   @OnError
-  public void onError(Throwable error) {
+  public void onError(Throwable error,Session session) {
     socketServers.forEach(client ->{
       if (client.getSession().getId().equals(session.getId())) {
         socketServers.remove(client);
