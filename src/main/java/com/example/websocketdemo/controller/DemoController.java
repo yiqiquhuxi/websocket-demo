@@ -3,6 +3,8 @@ package com.example.websocketdemo.controller;
 import com.alibaba.fastjson.JSON;
 import com.example.websocketdemo.server.SocketServer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("demo")
 public class DemoController {
 
+  @Autowired
+  private RabbitTemplate rabbitTemplate;
+
 
   @GetMapping("send")
-  public <T> T sendAll(String msg){
+  public <T> T sendAll(String msg) {
     StopWatch stopWatch = new StopWatch();
     stopWatch.start();
     try {
@@ -32,7 +37,31 @@ public class DemoController {
       return (T) "fail";
     } finally {
       stopWatch.stop();
-      log.info("socket sendAll cost,{}",stopWatch.getTotalTimeMillis());
+      log.info("socket sendAll cost,{}", stopWatch.getTotalTimeMillis());
+    }
+    return (T) "success";
+  }
+
+
+  /**
+   * 发送消息至mq
+   *
+   * @param msg
+   * @param <T>
+   * @return
+   */
+  @GetMapping("sendMq")
+  public <T> T sendMq(String msg) {
+    StopWatch stopWatch = new StopWatch();
+    stopWatch.start();
+    try {
+      rabbitTemplate.convertAndSend("socket-fanout-exchange", null, msg);
+    } catch (Exception e) {
+      log.error("socket sendMq error,{}", JSON.toJSONString(e));
+      return (T) "fail";
+    } finally {
+      stopWatch.stop();
+      log.info("socket sendMq cost,{}", stopWatch.getTotalTimeMillis());
     }
     return (T) "success";
   }
