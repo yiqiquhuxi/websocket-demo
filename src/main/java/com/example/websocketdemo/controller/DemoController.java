@@ -67,4 +67,18 @@ public class DemoController {
   }
 
 
+  /**
+   * get size
+   *
+   * @param <T>
+   * @return
+   */
+  @GetMapping("size")
+  public <T> String size() {
+    int size = SocketServer.socketServers.size();
+    return "机器A：链接长度：" + size;
+
+  }
+
+
 }
