@@ -13,13 +13,17 @@
 
 2. 服务器发送消息至客户端
 ```
-普通get请求：http://localhost:8888/demo/send?msg=发送客户端的消息
+get请求：http://localhost:8888/demo/send?msg=发送客户端的消息
 ```
 ```
 发送get请求至mq：(解决session共享问题)
 http://localhost:8888/demo/sendMq?msg=发送客户端的消息
 ```
-
+3. 查看链接数量
+```
+get请求：
+http://localhost:8888/demo/size
+```
 
 ## 项目结构如下
 ```
